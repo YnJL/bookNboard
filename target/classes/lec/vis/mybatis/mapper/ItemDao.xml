@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="lec.vis.mybatis.dao.ItemDao">
+
+ 	<insert id="insert" parameterType="lec.vis.mybatis.dto.ItemDTO">	<!-- 매개변수 타입 -->
+ 		INSERT INTO IOITEM(IID,ITEM,ISEC)
+ 		VALUES(#{iID},#{item},#{iSec})
+ 	</insert>
+ 	
+ 	<delete id="delete"> 												<!-- parameterType="" 생략가능 -->
+ 		DELETE FROM IOITEM WHERE IID = #{param1}						<!-- param1 : 첫번째 매개변수가 자동으로 잡힘 -->
+ 	</delete>
+
+	<update id="update" parameterType="lec.vis.mybatis.dto.ItemDTO">
+		UPDATE IOITEM SET ITEM = #{item}, ISEC = #{iSec} 
+		WHERE IID = #{iID}
+	</update>
+		
+ 	<select id="select" resultType="lec.vis.mybatis.dto.ItemDTO">		<!-- 결과 타입 -->
+ 		SELECT * FROM IOITEM WHERE IID = #{param1}
+ 	</select>	
+ 	
+ 	<select id="selectAll" resultType="lec.vis.mybatis.dto.ItemDTO">
+ 		SELECT * FROM IOITEM order by ISEC ASC, ITEM ASC
+ 	</select>
+ 	
+ 	
+<!--  	
+ 	<insert id="batch" parameterType="java.util.List">
+ 		<foreach item="dto" collection="list"
+ 				open="INSERT ALL" close="SELECT * FROM SYS.DUAL" separator=" ">
+ 			INTO MEMBER(MID,MPW,MNAME,MPHON)
+ 		VALUES(#{dto.mID},#{dto.mPW},#{dto.mname},#{dto.mphon})
+ 		</foreach>
+ 	</insert> 	
+ -->
+</mapper>

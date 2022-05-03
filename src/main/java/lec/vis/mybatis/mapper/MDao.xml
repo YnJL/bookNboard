@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="lec.vis.mybatis.dao.MDao">
+
+<!--
+	public void insert(MemberDTO dto);				// 질의 : insert
+	public List<MemberDTO> list();					// 질의 : select
+	public void delete(String mID);					// 질의 : delete
+	public int batch(List<MemberDTO> list);			// 질의 : insert
+ -->
+ 	<insert id="minsert" parameterType="lec.vis.mybatis.dto.MemberDTO">	<!-- 매개변수 타입 -->
+ 		INSERT INTO MEMBER(MID,MPW,MNAME,MPHON)
+ 		VALUES(#{mID},#{mPW},#{mName},#{mPhon})
+ 	</insert>
+
+ 	<select id="mlist" resultType="lec.vis.mybatis.dto.MemberDTO">		<!-- 결과 타입 -->
+ 		SELECT * FROM MEMBER order by MID ASC
+ 	</select>
+ 	
+ 	<delete id="mdelete" > 											<!-- parameterType="string" 생략가능 -->
+ 		DELETE FROM MEMBER WHERE MID = #{param1}					<!-- param1 : 첫번째 매개변수가 자동으로 잡힘 -->
+ 	</delete>
+ 	
+ 	<insert id="batch" parameterType="java.util.List">
+ 		<foreach item="dto" collection="list"
+ 				open="INSERT ALL" close="SELECT * FROM SYS.DUAL" separator=" ">
+ 			INTO MEMBER(MID,MPW,MNAME,MPHON)
+ 		VALUES(#{dto.mID},#{dto.mPW},#{dto.mName},#{dto.mPhon})
+ 		</foreach>
+ 	</insert> 	
+ 	
+ 	<select id="mselect" resultType="lec.vis.mybatis.dto.MemberDTO">		<!-- 결과 타입 -->
+ 		SELECT * FROM MEMBER WHERE mID = #{mID}
+ 	</select>
+ 		
+ 	<select id="login" resultType="lec.vis.mybatis.dto.MemberDTO">
+ 		SELECT * FROM MEMBER where MID = #{mID}
+ 	</select>
+ 	
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="lec.vis.mybatis.dao.BDao">
+<!-- 
+	public CBoardDTO view_content(int bID);
+	public int insert(String mID, String bTitl, String bCont);
+	public List<CBoardDTO> list();
+	public int modify(int bID, String bTitl, String bCont, String mID);
+	public int delete(int bID);
+	public int reply(int bID, String mID, String bTitl, String bCont, int bGroup, int bSteps, int bIndnt);
+	public CBoardDTO view_reply(int bID);
+	public void upHit(int bID);
+ -->
+ 	<select id="blist" resultType="lec.vis.mybatis.dto.CBoardDTO">
+ 		SELECT * FROM CBOARD order by BGROUP DESC, BSTEPS ASC, BID DESC
+ 	</select>
+ 	
+ 	<update id="upHit">
+ 		UPDATE CBOARD SET BHITS = BHITS+1 WHERE BID = #{param1}
+ 	</update>
+ 	
+ 	<select id="view_content" resultType="lec.vis.mybatis.dto.CBoardDTO">
+ 		SELECT * FROM CBOARD WHERE BID = #{param1}
+ 	</select>
+ 	
+ 	<insert id="binsert" parameterType="lec.vis.mybatis.dto.CBoardDTO">
+ 		INSERT INTO CBOARD(BID,MID,BTITL,BCONT,BHITS,BGROUP,BSTEPS,BINDNT)
+ 		VALUES(SEQ_CBOARD.NEXTVAL,#{param1},#{param2},#{param3},0,SEQ_CBOARD.CURRVAL,0,0)
+ 	</insert>
+ 	
+	<update id="bmodify" parameterType="lec.vis.mybatis.dto.CBoardDTO">
+		UPDATE CBOARD SET BTITL = #{param2}, BCONT = #{param3}
+		WHERE BID = #{param1}
+	</update>
+ 	
+ 	<delete id="bdelete">
+ 		DELETE FROM CBOARD WHERE BID = #{param1}
+ 	</delete>
+ 	 	
+ 	<insert id="reply" parameterType="lec.vis.mybatis.dto.CBoardDTO">
+ 		INSERT INTO CBOARD(BID,MID,BTITL,BCONT,BGROUP,BSTEPS,BINDNT)
+ 		VALUES(SEQ_CBOARD.NEXTVAL,#{param1},#{param2},#{param3},#{param4},#{param5}+1,#{param6}+1)
+ 	</insert>
+ 	
+ 	<select id="view_reply" resultType="lec.vis.mybatis.dto.CBoardDTO">
+ 		SELECT * FROM CBOARD WHERE BID = #{param1}
+ 	</select>
+</mapper>

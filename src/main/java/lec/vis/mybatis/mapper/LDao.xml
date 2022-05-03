@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="lec.vis.mybatis.dao.LDao">
+
+<!--
+	public int insert(LedgerDTO dto);
+	public int delete(int lID);
+	public int update(LedgerDTO dto);
+	public LedgerDTO select(int lID);
+	public List<LedgerDTO> selectAll();
+	public List<LedgerDTO> selByMID(String mID);
+ -->
+ 	<insert id="linsert" parameterType="lec.vis.mybatis.dto.LedgerDTO">	<!-- 매개변수 타입 -->
+ 		INSERT INTO LEDGER(LID,MID,LDATE,IID,DETAIL,INCOME,EXPNSE,NOTE)
+ 		VALUES(SEQ_LEDGER.NEXTVAL,#{mID},#{lDate},#{iID},#{detail},#{income},#{expnse},#{note})
+ 	</insert>
+ 	
+ 	<delete id="ldelete" parameterType="int"> 							<!-- parameterType="" 생략가능 -->
+ 		DELETE FROM LEDGER WHERE LID = #{param1}						<!-- param1 : 첫번째 매개변수가 자동으로 잡힘 -->
+ 	</delete>
+
+	<update id="lupdate" parameterType="lec.vis.mybatis.dto.LedgerDTO">
+		UPDATE LEDGER SET LDATE = #{lDate}, IID = #{iID}, DETAIL = #{detail},
+						 INCOME = #{income}, EXPNSE = #{expnse}, NOTE = #{note} 
+		WHERE LID = #{lID}
+	</update>
+		
+ 	<select id="lselect" resultType="lec.vis.mybatis.dto.LedgerDTO">		<!-- 결과 타입 -->
+ 		SELECT * FROM LEDGER WHERE LID = #{param1}
+ 	</select>	
+ 	
+ 	<select id="lselectAll" resultType="lec.vis.mybatis.dto.LedgerDTO">
+ 		SELECT * FROM LEDGER order by LDATE ASC, LID ASC
+ 	</select>
+ 	
+ 	<select id="lselByMID" resultType="lec.vis.mybatis.dto.LedgerDTO">
+ 		SELECT * FROM LEDGER WHERE MID = #{param1} order by LDATE ASC, LID ASC
+ 	</select>
+ 	
+ 	<select id="lselByMon" resultType="lec.vis.mybatis.dto.LedgerDTO">
+ 		SELECT * FROM LEDGER
+ 		WHERE MID = #{param1} and TO_CHAR(LDATE,'YYYY') = #{param2} and TO_CHAR(LDATE,'MM') = #{param3} 
+ 		order by LDATE ASC, LID ASC
+ 	</select>
+
+</mapper>
